@@ -46,7 +46,7 @@ function filterNewPosts(posts) {
 }
 
 function makeMessage(posts) {
-  return '皆で応援しましょう！\n' + posts.map(function (post) {
+  return '皆で応援しましょう :tada: \n' + posts.map(function (post) {
     return post.user + ' さんが 「' + post.title+ '」 を投稿しました！\nhttps://qiita.com' + post.url;
   }).join('\n');
 }
