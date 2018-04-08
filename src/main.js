@@ -2,7 +2,9 @@ var config = getConfig();
 
 function main() {
   var posts = fetchPosts();
-  var message = makeMessage(posts);
+  var filteredPosts = filterNewPosts(posts);
+  if (filteredPosts.length === 0) return;
+  var message = makeMessage(filteredPosts);
   postSlack(message);
 }
 
@@ -28,9 +30,24 @@ function fetchPosts() {
   return posts;
 }
 
+function filterNewPosts(posts) {
+  var key = 'LATEST_POST_PATH';
+  var properties = PropertiesService.getScriptProperties();
+
+  var value = properties.getProperty(key);
+  properties.setProperty(key, posts[0].url);
+  if (!value) return posts;
+
+  var index = posts.map(function (post) { return post.url; }).indexOf(value);
+  if (index === 0) return [];
+
+  var sliceNumber = index === -1 ? posts.length-1 : index;
+  return posts.slice(0, sliceNumber);
+}
+
 function makeMessage(posts) {
-  return posts.map(function (post) {
-    return post.user + ' が `' + post.title+ '` を投稿しました！\nhttps://qiita.com' + post.url;
+  return '皆で応援しましょう！\n' + posts.map(function (post) {
+    return post.user + ' さんが 「' + post.title+ '」 を投稿しました！\nhttps://qiita.com' + post.url;
   }).join('\n');
 }
 
