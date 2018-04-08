@@ -31,4 +31,4 @@ clasp などを利用して Google Apps Script にアップロード
 
 ### 4. トリガー設定
 
-適当なタイミングで呼び出すように Google Apps Script のトリガーをセット
+適当なタイミングで呼び出すように Google Apps Script の main 関数を実行するトリガーをセット
