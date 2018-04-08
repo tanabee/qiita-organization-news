@@ -1,5 +1,6 @@
 var config = getConfig();
 
+// 実行関数
 function main() {
   var posts = fetchPosts();
   var filteredPosts = filterNewPosts(posts);
@@ -8,6 +9,7 @@ function main() {
   postSlack(message);
 }
 
+// Qiita Organization ページから組織の最新の投稿 20 件を取得
 function fetchPosts() {
   var url  = 'https://qiita.com/organizations/' + config.organization + '/activities',
       html = UrlFetchApp.fetch(url).getContentText(),
@@ -30,6 +32,7 @@ function fetchPosts() {
   return posts;
 }
 
+// 前回のスクリプト実行以降の投稿のみフィルタ
 function filterNewPosts(posts) {
   var key = 'LATEST_POST_PATH';
   var properties = PropertiesService.getScriptProperties();
@@ -45,6 +48,7 @@ function filterNewPosts(posts) {
   return posts.slice(0, sliceNumber);
 }
 
+// Slack に投稿するメッセージ生成
 function makeMessage(posts) {
   return '皆で応援しましょう :tada: \n' + posts.map(function (post) {
     return post.user + ' さんが 「' + post.title+ '」 を投稿しました！\nhttps://qiita.com' + post.url;
